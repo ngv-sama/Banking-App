@@ -69,7 +69,19 @@ if option == "Wealth Management":
         st.write("### Money Spent Over Time")
 
         # Plot given data in blue
-        st.line_chart(data.set_index('Date Time')['Transaction Amount'])
+        chart = st.line_chart(data.set_index('Date Time')['Transaction Amount'])
+
+        # Input for integer value
+        integer_input = st.number_input("Enter an integer value:", value=0, step=1)
+
+        # Draw red dotted line
+        if integer_input:
+            chart.line_chart(data=pd.Series([integer_input] * len(data)), use_container_width=True, color='red', linestyle='--')
+
+        # Predicted prices for the next 30 days
+        st.write("### Predicted Prices for Next 30 Days")
+        predicted_prices = [avg_transaction_amount] * 30
+        st.line_chart(pd.Series(predicted_prices))
 
 elif option == "Stock Prediction":
     st.title("Stock Prediction")
@@ -96,6 +108,30 @@ elif option == "Stock Prediction":
         # Display the predicted stock prices
         st.write("### Predicted Stock Prices")
         st.write(forecast_data)
+
+        # Display past performance
+        st.write("### Past Performance")
+        st.line_chart(df['4. close'])
+
+        # Display candlestick chart with predicted prices
+        st.write("### Candlestick Chart with Predicted Prices")
+
+        # Create a plotly candlestick chart
+        fig = go.Figure(data=[go.Candlestick(x=df.index,
+                                           open=df['1. open'],
+                                           high=df['2. high'],
+                                           low=df['3. low'],
+                                           close=df['4. close'],
+                                           name='Past Prices'),
+                            go.Candlestick(x=forecast_data['Date'],
+                                           open=forecast_data['Predicted Close Price'],
+                                           high=forecast_data['Predicted Close Price'],
+                                           low=forecast_data['Predicted Close Price'],
+                                           close=forecast_data['Predicted Close Price'],
+                                           name='Predicted Prices')])
+
+        fig.update_layout(xaxis_rangeslider_visible=False)
+        st.plotly_chart(fig)
 
 elif option == "Chat Bot":
     st.title("Bank Baba - Your Banking Assistant")
