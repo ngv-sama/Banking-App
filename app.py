@@ -81,15 +81,8 @@ if option == "Wealth Management":
         # Input for integer value
         integer_input = st.number_input("Enter an integer value:", value=0, step=1)
 
-        # Draw red dotted line
-        if integer_input:
-            chart.line_chart(data=pd.Series([integer_input] * len(data)), use_container_width=True, color='red', linestyle='--')
-
-        # Predicted prices for the next 30 days
-        st.write("### Predicted Prices for Next 30 Days")
-        predicted_prices = [avg_transaction_amount] * 30
-        st.line_chart(pd.Series(predicted_prices))
-
+        
+        
 elif option == "Stock Prediction":
     st.title("Stock Prediction")
 
