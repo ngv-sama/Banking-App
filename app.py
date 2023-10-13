@@ -117,12 +117,7 @@ elif option == "Stock Prediction":
         st.write("### Candlestick Chart with Predicted Prices")
 
         # Create a plotly candlestick chart
-        fig = go.Figure(data=[go.Candlestick(x=df.index,
-                                           open=df['1. open'],
-                                           high=df['2. high'],
-                                           low=df['3. low'],
-                                           close=df['4. close'],
-                                           name='Past Prices'),
+        fig = go.Figure(data=[go.Candlestick(x=df.index, open=df['1. open'], high=df['2. high'], low=df['3. low'], close=df['4. close'], name='Past Prices'),
                             go.Candlestick(x=forecast_data['Date'],
                                            open=forecast_data['Predicted Close Price'],
                                            high=forecast_data['Predicted Close Price'],
