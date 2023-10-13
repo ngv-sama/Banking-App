@@ -55,15 +55,16 @@ if option == "Wealth Management":
 
         # Display pie chart of top spenders
         st.write("### Top 3 Spendings by Business")
-
+        
         # Get top 3 spenders
         top_spenders = data.groupby('Location/Business')['Transaction Amount'].sum().nlargest(3)
         others = data.groupby('Location/Business')['Transaction Amount'].sum().nsmallest(len(data['Location/Business'].unique())-3)
-
+        
         # Combine small categories into 'Others'
-        top_spenders = top_spenders.append(pd.Series(others.sum(), index=['Others']))
-
+        top_spenders = pd.concat([top_spenders, pd.Series(others.sum(), index=['Others'])])
+        
         st.pie_chart(top_spenders)
+
 
         # Display time series graph of money spent over time
         st.write("### Money Spent Over Time")
