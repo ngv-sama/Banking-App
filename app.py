@@ -84,7 +84,10 @@ if option == "Wealth Management":
 
         # Predict future spending using SARIMA model
         if integer_input > 0:
-            model = SARIMAX(data['Transaction Amount'], order=(1, 1, 1), seasonal_order=(1, 1, 1, 12))
+            # Group data by date and sum transaction amounts
+            daily_transactions = data.groupby(data['Date Time'].dt.date)['Transaction Amount'].sum().reset_index()
+
+            model = SARIMAX(daily_transactions['Transaction Amount'], order=(1, 1, 1), seasonal_order=(1, 1, 1, 12))
             results = model.fit(disp=False)
             future_dates = pd.date_range(data['Date Time'].max(), periods=20)
             future_predictions = results.get_forecast(steps=20)
