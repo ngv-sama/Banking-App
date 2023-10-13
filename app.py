@@ -4,6 +4,8 @@ import pandas as pd
 from langchain import PromptTemplate, HuggingFaceHub, LLMChain
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+
 import os
 
 # Set Hugging Face API token
