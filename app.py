@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 from langchain import PromptTemplate, HuggingFaceHub, LLMChain
 from statsmodels.tsa.statespace.sarimax import SARIMAX
+import matplotlib.pyplot as plt
 import os
 
 # Set Hugging Face API token
