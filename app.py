@@ -63,7 +63,12 @@ if option == "Wealth Management":
         # Combine small categories into 'Others'
         top_spenders = pd.concat([top_spenders, pd.Series(others.sum(), index=['Others'])])
         
-        st.pie_chart(top_spenders)
+        # Create a pie chart
+        fig, ax = plt.subplots()
+        ax.pie(top_spenders, labels=top_spenders.index, autopct='%1.1f%%', startangle=90)
+        ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+        st.pyplot(fig)
+
 
 
         # Display time series graph of money spent over time
