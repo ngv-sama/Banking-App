@@ -85,6 +85,7 @@ if option == "Wealth Management":
         predicted_prices = [avg_transaction_amount] * 30
         st.line_chart(pd.Series(predicted_prices))
 
+
 elif option == "Stock Prediction":
     st.title("Stock Prediction")
 
@@ -100,6 +101,15 @@ elif option == "Stock Prediction":
         df.index = pd.to_datetime(df.index)
         df['4. close'] = df['4. close'].astype(float)
 
+        # Calculate daily returns
+        df['Daily Returns'] = df['4. close'].pct_change()
+
+        # Calculate volatility (standard deviation of daily returns)
+        volatility = df['Daily Returns'].std()
+
+        # Display volatility
+        st.write(f"### Volatility (Standard Deviation of Daily Returns): {volatility:.4f}")
+
         # Predict future stock prices using SARIMA model
         model = SARIMAX(df['4. close'], order=(1, 1, 1), seasonal_order=(1, 1, 1, 12))
         results = model.fit(disp=False)
@@ -111,15 +121,16 @@ elif option == "Stock Prediction":
         st.write("### Predicted Stock Prices")
         st.write(forecast_data)
 
-        # Display past performance
-        st.write("### Past Performance")
-        st.line_chart(df['4. close'])
-
         # Display candlestick chart with predicted prices
         st.write("### Candlestick Chart with Predicted Prices")
 
         # Create a plotly candlestick chart
-        fig = go.Figure(data=[go.Candlestick(x=df.index, open=df['1. open'], high=df['2. high'], low=df['3. low'], close=df['4. close'], name='Past Prices'),
+        fig = go.Figure(data=[go.Candlestick(x=df.index,
+                                           open=df['1. open'],
+                                           high=df['2. high'],
+                                           low=df['3. low'],
+                                           close=df['4. close'],
+                                           name='Past Prices'),
                             go.Candlestick(x=forecast_data['Date'],
                                            open=forecast_data['Predicted Close Price'],
                                            high=forecast_data['Predicted Close Price'],
