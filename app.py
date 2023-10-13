@@ -80,9 +80,23 @@ if option == "Wealth Management":
         # Plot given data in blue
         chart = st.line_chart(data.set_index('Date Time')['Transaction Amount'])
 
-        # Input for integer value
-        integer_input = st.number_input("Enter an integer value:", value=0, step=1)
+         integer_input = st.number_input("Enter an integer value:", value=0, step=1)
 
+        # Predict future spending using SARIMA model
+        if integer_input > 0:
+            model = SARIMAX(data['Transaction Amount'], order=(1, 1, 1), seasonal_order=(1, 1, 1, 12))
+            results = model.fit(disp=False)
+            future_dates = pd.date_range(data['Date Time'].max(), periods=20)
+            future_predictions = results.get_forecast(steps=20)
+            forecast_data = pd.DataFrame({'Date Time': future_dates, 'Predicted Amount': future_predictions.predicted_mean.values})
+
+            # Plot the predicted data in red
+            plt.plot(forecast_data['Date Time'], forecast_data['Predicted Amount'], 'r--', label='Predicted Data')
+            plt.axhline(y=integer_input, color='r', linestyle='--', label='Red Dotted Line')
+            plt.legend()
+
+            # Display the updated chart
+            st.pyplot(plt)
         
         
 elif option == "Stock Prediction":
