@@ -4,8 +4,6 @@ import pandas as pd
 from langchain import PromptTemplate, HuggingFaceHub, LLMChain
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 import os
-import plotly.graph_objects as go
-
 
 # Set Hugging Face API token
 os.environ['HUGGINGFACEHUB_API_TOKEN'] = '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'
@@ -85,7 +83,6 @@ if option == "Wealth Management":
         predicted_prices = [avg_transaction_amount] * 30
         st.line_chart(pd.Series(predicted_prices))
 
-
 elif option == "Stock Prediction":
     st.title("Stock Prediction")
 
@@ -101,15 +98,6 @@ elif option == "Stock Prediction":
         df.index = pd.to_datetime(df.index)
         df['4. close'] = df['4. close'].astype(float)
 
-        # Calculate daily returns
-        df['Daily Returns'] = df['4. close'].pct_change()
-
-        # Calculate volatility (standard deviation of daily returns)
-        volatility = df['Daily Returns'].std()
-
-        # Display volatility
-        st.write(f"### Volatility (Standard Deviation of Daily Returns): {volatility:.4f}")
-
         # Predict future stock prices using SARIMA model
         model = SARIMAX(df['4. close'], order=(1, 1, 1), seasonal_order=(1, 1, 1, 12))
         results = model.fit(disp=False)
@@ -120,6 +108,10 @@ elif option == "Stock Prediction":
         # Display the predicted stock prices
         st.write("### Predicted Stock Prices")
         st.write(forecast_data)
+
+        # Display past performance
+        st.write("### Past Performance")
+        st.line_chart(df['4. close'])
 
         # Display candlestick chart with predicted prices
         st.write("### Candlestick Chart with Predicted Prices")
