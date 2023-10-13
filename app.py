@@ -80,7 +80,7 @@ if option == "Wealth Management":
         # Plot given data in blue
         chart = st.line_chart(data.set_index('Date Time')['Transaction Amount'])
 
-         integer_input = st.number_input("Enter an integer value:", value=0, step=1)
+        integer_input = st.number_input("Enter an integer value:", value=0, step=1)
 
         # Predict future spending using SARIMA model
         if integer_input > 0:
